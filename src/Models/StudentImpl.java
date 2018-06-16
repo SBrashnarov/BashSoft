@@ -1,7 +1,8 @@
 package Models;
 
-import IO.OutputWriter;
 import StaticData.ExceptionMessages;
+import contracts.Course;
+import contracts.Student;
 import exceptions.DuplicateEntryInStructureException;
 import exceptions.InvalidStringException;
 import exceptions.KeyNotFoundException;
@@ -11,12 +12,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Student {
+public class StudentImpl implements Student {
     private String userName;
     private HashMap<String, Course> enrolledCourses;
     private HashMap<String, Double> marksByCourseName;
 
-    public Student(String userName) {
+    public StudentImpl(String userName) {
         this.setUserName(userName);
         this.enrolledCourses = new HashMap<>();
         this.marksByCourseName = new HashMap<>();
@@ -48,21 +49,21 @@ public class Student {
         this.enrolledCourses.put(course.getName(), course);
     }
 
-    public void setMarksInCourse(String courseNmae, int...scores) {
-        if (!this.enrolledCourses.containsKey(courseNmae)) {
+    public void setMarksInCourse(String courseName, int...scores) {
+        if (!this.enrolledCourses.containsKey(courseName)) {
             throw new KeyNotFoundException();
         }
-        if (scores.length > Course.NUMBER_OF_TASKS_ON_EXAM) {
+        if (scores.length > CourseImpl.NUMBER_OF_TASKS_ON_EXAM) {
             throw new IllegalArgumentException(ExceptionMessages.INVALID_NUMBER_OF_SCORES);
         }
         double mark = calculateMark(scores);
-        this.marksByCourseName.put(courseNmae, mark);
+        this.marksByCourseName.put(courseName, mark);
     }
 
     private double calculateMark(int[] scores) {
         double percentageOfSolvedExam = Arrays.stream(scores)
                 .sum() /
-                (double) (Course.NUMBER_OF_TASKS_ON_EXAM * Course.MAX_SCORE_ON_EXAM_TASK);
+                (double) (CourseImpl.NUMBER_OF_TASKS_ON_EXAM * CourseImpl.MAX_SCORE_ON_EXAM_TASK);
 
         double mark = percentageOfSolvedExam * 4 + 2;
         return mark;

@@ -1,14 +1,15 @@
 package Repository;
 
 import IO.OutputWriter;
+import contracts.DataSorter;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RepositorySorter {
+public class RepositorySorter implements DataSorter {
 
     public void printSortedStudents(
-            HashMap<String, Double> courseData,
+            Map<String, Double> courseData,
             String comparisonType,
             int numberOfStudents) {
 

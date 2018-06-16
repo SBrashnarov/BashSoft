@@ -1,19 +1,17 @@
 package IO.commands;
 
-import IO.IOManager;
 import IO.OutputWriter;
-import Judge.Tester;
-import Network.DownloadManager;
-import Repository.StudentsRepository;
+import contracts.*;
 import exceptions.InvalidInputException;
 
-public class DropDatabaseCommand extends Command {
+public class DropDatabaseCommand extends Command implements Executable {
 
     public DropDatabaseCommand(String input,
                                String[] data,
-                               StudentsRepository repository,
-                               Tester tester, IOManager ioManager,
-                               DownloadManager downloadManager) {
+                               Database repository,
+                               ContentComparer tester,
+                               DirectoryManager ioManager,
+                               AsynchDownloader downloadManager) {
         super(input, data, repository, tester, ioManager, downloadManager);
     }
 
@@ -24,7 +22,7 @@ public class DropDatabaseCommand extends Command {
             throw new InvalidInputException(this.getInput());
         }
 
-        this.getRepository().undloadData();
+        this.getRepository().unloadData();
         OutputWriter.writeMessageOnNewLine("Database dropped!");
     }
 }

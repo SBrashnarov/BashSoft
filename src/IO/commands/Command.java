@@ -1,27 +1,24 @@
 package IO.commands;
 
-import IO.IOManager;
-import Judge.Tester;
-import Network.DownloadManager;
-import Repository.StudentsRepository;
+import contracts.*;
 import exceptions.InvalidInputException;
 
-public abstract class Command {
+public abstract class Command implements Executable {
 
     private String input;
     private String[] data;
 
-    private StudentsRepository repository;
-    private Tester tester;
-    private IOManager ioManager;
-    private DownloadManager downloadManager;
+    private Database repository;
+    private ContentComparer tester;
+    private DirectoryManager ioManager;
+    private AsynchDownloader downloadManager;
 
     protected Command(String input,
-                   String[] data,
-                   StudentsRepository repository,
-                   Tester tester,
-                   IOManager ioManager,
-                   DownloadManager downloadManager) {
+                      String[] data,
+                      Database repository,
+                      ContentComparer tester,
+                      DirectoryManager ioManager,
+                      AsynchDownloader downloadManager) {
         this.setInput(input);
         this.setData(data);
         this.repository = repository;
@@ -52,21 +49,19 @@ public abstract class Command {
         this.data = data;
     }
 
-    protected StudentsRepository getRepository() {
+    protected Database getRepository() {
         return repository;
     }
 
-    protected Tester getTester() {
+    protected ContentComparer getTester() {
         return tester;
     }
 
-    protected IOManager getIoManager() {
+    protected DirectoryManager getIoManager() {
         return ioManager;
     }
 
-    protected DownloadManager getDownloadManager() {
+    protected AsynchDownloader getDownloadManager() {
         return downloadManager;
     }
-
-    public abstract void execute() throws Exception;
 }

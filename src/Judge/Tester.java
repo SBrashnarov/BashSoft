@@ -2,12 +2,13 @@ package Judge;
 
 import IO.OutputWriter;
 import StaticData.ExceptionMessages;
+import contracts.ContentComparer;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tester {
+public class Tester implements ContentComparer {
 
     public void compareContent(String actualOutput, String expectedOutput) throws IOException {
         OutputWriter.writeMessageOnNewLine("Reading files...");

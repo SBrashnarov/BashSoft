@@ -3,6 +3,7 @@ package Network;
 import IO.OutputWriter;
 import StaticData.ExceptionMessages;
 import StaticData.SessionData;
+import contracts.AsynchDownloader;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,7 +13,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-public class DownloadManager {
+public class DownloadManager implements AsynchDownloader {
 
     public void download(String fileURL) {
 

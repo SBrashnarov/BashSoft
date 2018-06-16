@@ -1,23 +1,20 @@
 package IO.commands;
 
-import IO.IOManager;
-import Judge.Tester;
-import Network.DownloadManager;
-import Repository.StudentsRepository;
 import StaticData.SessionData;
+import contracts.*;
 import exceptions.InvalidInputException;
 
 import java.awt.*;
 import java.io.File;
 
-public class OpenFileCommand extends Command {
+public class OpenFileCommand extends Command implements Executable {
 
     public OpenFileCommand(String input,
                            String[] data,
-                           StudentsRepository repository,
-                           Tester tester,
-                           IOManager ioManager,
-                           DownloadManager downloadManager) {
+                           Database repository,
+                           ContentComparer tester,
+                           DirectoryManager ioManager,
+                           AsynchDownloader downloadManager) {
         super(input, data, repository, tester, ioManager, downloadManager);
     }
 

@@ -1,18 +1,18 @@
 package IO;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 import StaticData.ExceptionMessages;
 import StaticData.SessionData;
+import contracts.DirectoryManager;
 import exceptions.InvalidFileNameException;
 import exceptions.InvalidPathException;
 
-public class IOManager {
+public class IOManager implements DirectoryManager {
 
     private static final String FILE_SEPARATOR = File.separator;
 
-    public void traverseFolder(int depth) {
+    public void traverseDirectory(int depth) {
         LinkedList<File> subFolders = new LinkedList<>();
 
         String path = getCurrentDirectoryPath();
@@ -49,7 +49,7 @@ public class IOManager {
         }
     }
 
-    public void createDirectoryInCurrentFolder(String name) {
+    public void createDirectoryInCurrentDirectory(String name) {
         String path = getCurrentDirectoryPath() + FILE_SEPARATOR + name;
         File file = new File(path);
         boolean wasDirMade = file.mkdir();
@@ -63,13 +63,7 @@ public class IOManager {
         return SessionData.currentPath;
     }
 
-    /**
-     The Desciption of the method to explain what the method does.
-     @param relativePath parameters used by the method
-     @return void
-     @throws IOException kind of exception does this method throw
-     */
-    public void changeCurrentDirRelativePath(String relativePath) throws IOException {
+    public void changeCurrentDirRelativePath(String relativePath) {
         if (relativePath.equals("..")) {
             try {
                 String currentPath = SessionData.currentPath;

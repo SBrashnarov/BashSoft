@@ -2,13 +2,15 @@ package Repository;
 
 import IO.OutputWriter;
 import StaticData.ExceptionMessages;
-import java.util.HashMap;
+import contracts.DataFilter;
+
+import java.util.Map;
 import java.util.function.Predicate;
 
-public class RepositoryFilter {
+public class RepositoryFilter implements DataFilter {
 
     public void printFilteredStudents(
-            HashMap<String, Double> studentsWithMarks,
+            Map<String, Double> studentsWithMarks,
             String filterType,
             Integer numberOfStudents) {
 

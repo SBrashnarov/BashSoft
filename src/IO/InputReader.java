@@ -4,14 +4,16 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import StaticData.SessionData;
+import contracts.Interpreter;
+import contracts.Reader;
 
-public class InputReader {
+public class InputReader implements Reader {
 
     private static final String END_COMMAND = "quit";
 
-    private CommandInterpreter interpreter;
+    private Interpreter interpreter;
 
-    public InputReader(CommandInterpreter interpreter) {
+    public InputReader(Interpreter interpreter) {
         this.interpreter = interpreter;
     }
 

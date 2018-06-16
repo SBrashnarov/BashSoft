@@ -1,18 +1,16 @@
 package IO.commands;
 
-import IO.IOManager;
-import Judge.Tester;
-import Network.DownloadManager;
-import Repository.StudentsRepository;
+import contracts.*;
 import exceptions.InvalidInputException;
 
-public class DownloadFileAsynchCommand extends Command{
+public class DownloadFileAsynchCommand extends Command {
 
     public DownloadFileAsynchCommand(String input,
-                               String[] data,
-                               StudentsRepository repository,
-                               Tester tester, IOManager ioManager,
-                               DownloadManager downloadManager) {
+                                     String[] data,
+                                     Database repository,
+                                     ContentComparer tester,
+                                     DirectoryManager ioManager,
+                                     AsynchDownloader downloadManager) {
         super(input, data, repository, tester, ioManager, downloadManager);
     }
 

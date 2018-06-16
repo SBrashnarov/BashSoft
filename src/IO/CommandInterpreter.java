@@ -1,24 +1,22 @@
 package IO;
 
 import IO.commands.*;
-import Judge.Tester;
-import Network.DownloadManager;
-import Repository.StudentsRepository;
+import contracts.*;
 import exceptions.InvalidInputException;
 
 import java.io.IOException;
 
-public class CommandInterpreter {
+public class CommandInterpreter implements Interpreter {
 
-    private Tester tester;
-    private StudentsRepository repository;
-    private DownloadManager downloadManager;
-    private IOManager inputOutputManager;
+    private ContentComparer tester;
+    private Database repository;
+    private AsynchDownloader downloadManager;
+    private DirectoryManager inputOutputManager;
 
-    public CommandInterpreter(Tester tester,
-                              StudentsRepository repository,
-                              DownloadManager downloadManager,
-                              IOManager inputOutputManager) {
+    public CommandInterpreter(ContentComparer tester,
+                              Database repository,
+                              AsynchDownloader downloadManager,
+                              DirectoryManager inputOutputManager) {
         this.tester = tester;
         this.repository = repository;
         this.downloadManager = downloadManager;
@@ -30,14 +28,14 @@ public class CommandInterpreter {
         String commandName = data[0].toLowerCase();
 
         try {
-            Command command = parseCommand(input, data, commandName);
+            Executable command = parseCommand(input, data, commandName);
             command.execute();
         } catch (Throwable t) {
             OutputWriter.displayException(t.getMessage());
         }
     }
 
-    private Command parseCommand(String input, String[] data, String command) {
+    private Executable parseCommand(String input, String[] data, String command) {
         switch (command) {
             case "open":
                 return new OpenFileCommand(input, data, this.repository, this.tester, this.inputOutputManager, this.downloadManager);

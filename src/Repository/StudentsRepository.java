@@ -1,10 +1,11 @@
 package Repository;
 
 import IO.OutputWriter;
-import Models.Course;
-import Models.Student;
+import Models.CourseImpl;
+import Models.StudentImpl;
 import StaticData.ExceptionMessages;
 import StaticData.SessionData;
+import contracts.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,15 +14,15 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StudentsRepository {
+public class StudentsRepository implements Database {
 
     private boolean isDataInitialized;
-    private HashMap<String, Course> courses;
-    private HashMap<String, Student> students;
-    private RepositoryFilter filter;
-    private RepositorySorter sorter;
+    private Map<String, Course> courses;
+    private Map<String, Student> students;
+    private DataFilter filter;
+    private DataSorter sorter;
 
-    public StudentsRepository(RepositoryFilter filter, RepositorySorter sorter) {
+    public StudentsRepository(DataFilter filter, DataSorter sorter) {
         this.filter = filter;
         this.sorter = sorter;
     }
@@ -68,7 +69,7 @@ public class StudentsRepository {
         this.readData(fileName);
     }
 
-    public void undloadData() {
+    public void unloadData() {
         if (!this.isDataInitialized) {
             throw new RuntimeException(ExceptionMessages.DATA_NOT_INITIALIZED);
         }
@@ -78,7 +79,7 @@ public class StudentsRepository {
     }
 
     private void readData(String fileName) throws IOException {
-        String regex = "([A-Z][a-zA-Z#\\+]*_[A-Z][a-z]{2}_\\d{4})\\s+([A-Za-z]+\\d{2}_\\d{2,4})\\s([\\s0-9]+)";
+        String regex = "([A-Z][a-zA-Z#+]*_[A-Z][a-z]{2}_\\d{4})\\s+([A-Za-z]+\\d{2}_\\d{2,4})\\s([\\s0-9]+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher;
 
@@ -104,15 +105,15 @@ public class StudentsRepository {
                         OutputWriter.displayException(ExceptionMessages.INVALID_SCORE);
                         continue;
                     }
-                    if (scores.length > Course.NUMBER_OF_TASKS_ON_EXAM) {
+                    if (scores.length > CourseImpl.NUMBER_OF_TASKS_ON_EXAM) {
                         OutputWriter.displayException(ExceptionMessages.INVALID_NUMBER_OF_SCORES);
                         continue;
                     }
                     if (!this.students.containsKey(studentName)) {
-                        this.students.put(studentName, new Student(studentName));
+                        this.students.put(studentName, new StudentImpl(studentName));
                     }
                     if (!this.courses.containsKey(courseName)) {
-                        this.courses.put(courseName, new Course(courseName));
+                        this.courses.put(courseName, new CourseImpl(courseName));
                     }
                     Course course = this.courses.get(courseName);
                     Student student = this.students.get(studentName);
