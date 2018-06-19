@@ -6,6 +6,7 @@ import Models.StudentImpl;
 import StaticData.ExceptionMessages;
 import StaticData.SessionData;
 import contracts.*;
+import dataStructures.SimpleSortedList;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -77,6 +78,48 @@ public class StudentsRepository implements Database {
         this.courses = null;
         this.isDataInitialized = false;
     }
+
+    public void getStudentMarkInCourse(String courseName, String studentName) {
+        if (!isQueryForStudentPossible(courseName, studentName)) {
+            return;
+        }
+
+        double mark = this.courses.get(courseName)
+                .getStudentsByName().get(studentName)
+                .getMarksByCourseName().get(courseName);
+        OutputWriter.printStudent(studentName, mark);
+    }
+
+    public void getStudentsByCourse(String courseName) {
+        if (!isQueryForCoursePossible(courseName)) {
+            return;
+        }
+
+        OutputWriter.writeMessageOnNewLine(courseName + ":");
+        for (Map.Entry<String, Student> student : this.courses.get(courseName).getStudentsByName().entrySet()) {
+            this.getStudentMarkInCourse(courseName, student.getKey());
+        }
+    }
+
+    @Override
+    public SimpleSortedList<Student> getAllStudentsSorted(Comparator<Student> comparator) {
+        SimpleSortedList<Student> studentsSortedList =
+                new SimpleSortedList<>(Student.class, comparator);
+
+        studentsSortedList.addAll(this.students.values());
+
+        return studentsSortedList;
+    }
+
+    @Override
+    public SimpleSortedList<Course> getAllCoursesSorted(Comparator<Course> comparator) {
+        SimpleSortedList<Course> coursesSortedList =
+                new SimpleSortedList<>(Course.class, comparator);
+
+        coursesSortedList.addAll(this.courses.values());
+
+        return coursesSortedList;    }
+
 
     private void readData(String fileName) throws IOException {
         String regex = "([A-Z][a-zA-Z#+]*_[A-Z][a-z]{2}_\\d{4})\\s+([A-Za-z]+\\d{2}_\\d{2,4})\\s([\\s0-9]+)";
@@ -155,27 +198,5 @@ public class StudentsRepository implements Database {
         }
 
         return true;
-    }
-
-    public void getStudentMarkInCourse(String courseName, String studentName) {
-        if (!isQueryForStudentPossible(courseName, studentName)) {
-            return;
-        }
-
-        double mark = this.courses.get(courseName)
-                .getStudentsByName().get(studentName)
-                .getMarksByCourseName().get(courseName);
-        OutputWriter.printStudent(studentName, mark);
-    }
-
-    public void getStudentsByCourse(String courseName) {
-        if (!isQueryForCoursePossible(courseName)) {
-            return;
-        }
-
-        OutputWriter.writeMessageOnNewLine(courseName + ":");
-        for (Map.Entry<String, Student> student : this.courses.get(courseName).getStudentsByName().entrySet()) {
-            this.getStudentMarkInCourse(courseName, student.getKey());
-        }
     }
 }
