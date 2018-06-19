@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CourseImpl implements Course {
+
     public static final int NUMBER_OF_TASKS_ON_EXAM = 5;
     public static final int MAX_SCORE_ON_EXAM_TASK = 100;
 
@@ -25,13 +26,6 @@ public class CourseImpl implements Course {
         return name;
     }
 
-    private void setName(String name) {
-        if (name == null || name.trim().equals(" ")) {
-            throw new InvalidStringException();
-        }
-        this.name = name;
-    }
-
     public Map<String, Student> getStudentsByName() {
         return Collections.unmodifiableMap(studentsByName);
     }
@@ -41,5 +35,22 @@ public class CourseImpl implements Course {
             throw new DuplicateEntryInStructureException(student.getUserName(), this.name);
         }
         this.studentsByName.put(student.getUserName(), student);
+    }
+
+    @Override
+    public int compareTo(Course otherCourse) {
+        return this.getName().compareTo(otherCourse.getName());
+    }
+
+    @Override
+    public String toString() {
+        return this.getName();
+    }
+
+    private void setName(String name) {
+        if (name == null || name.trim().equals(" ")) {
+            throw new InvalidStringException();
+        }
+        this.name = name;
     }
 }

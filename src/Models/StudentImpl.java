@@ -60,6 +60,16 @@ public class StudentImpl implements Student {
         this.marksByCourseName.put(courseName, mark);
     }
 
+    @Override
+    public int compareTo(Student otherStudent) {
+        return this.getUserName().compareTo(otherStudent.getUserName());
+    }
+
+    @Override
+    public String toString() {
+        return this.getUserName();
+    }
+
     private double calculateMark(int[] scores) {
         double percentageOfSolvedExam = Arrays.stream(scores)
                 .sum() /
