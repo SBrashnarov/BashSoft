@@ -36,10 +36,14 @@ public class Tester implements ContentComparer {
     }
 
     private String getMismatchPath(String expectedOutput) {
-        int index = expectedOutput.lastIndexOf('\\');
-        String folderPath = expectedOutput.substring(0, index);
+        int index = expectedOutput.lastIndexOf(File.separator);
 
-        return folderPath + "\\mismatch.txt";
+        String folderPath= "";
+        if (index >= 0) {
+            folderPath = expectedOutput.substring(0, index);
+        }
+
+        return folderPath + File.separator + "mismatch.txt";
     }
 
     private List<String> readTextFile(String filePath) throws IOException {
@@ -65,10 +69,9 @@ public class Tester implements ContentComparer {
 
 
 
-    private boolean compareStrings(
-            List<String> actualOutputString,
-            List<String> expectedOutputString,
-            String mismatchPath) {
+    private boolean compareStrings(List<String> actualOutputString,
+            List<String> expectedOutputString, String mismatchPath) {
+
         OutputWriter.writeMessageOnNewLine("Comparing files...");
         boolean isMismatch = false;
 
@@ -84,10 +87,10 @@ public class Tester implements ContentComparer {
                 String expectedLine = expectedOutputString.get(i);
 
                 if (!actualLine.equals(expectedLine)) {
-                    output = String
-                            .format("mismatch -> expected(%s), actual(%s) %n"
+                    output = String.format("mismatch -> expected(%s), actual(%s) %n"
                                     , expectedLine
                                     , actualLine);
+
                     isMismatch = true;
                 } else {
                     output = String.format("line match -> %s%n", actualLine);
