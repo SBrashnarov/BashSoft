@@ -1,18 +1,15 @@
 package IO.commands;
 
 import IO.OutputWriter;
-import contracts.*;
+import annotations.Alias;
 import exceptions.InvalidInputException;
 
-public class GetHelpCommand extends Command implements Executable {
 
-    public GetHelpCommand(String input,
-                          String[] data,
-                          Database repository,
-                          ContentComparer tester,
-                          DirectoryManager ioManager,
-                          AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+@Alias("help")
+public class GetHelpCommand extends Command{
+
+    public GetHelpCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -21,6 +18,7 @@ public class GetHelpCommand extends Command implements Executable {
         if (data.length != 1) {
             throw new InvalidInputException(this.getInput());
         }
+
         displayHelp();
     }
 

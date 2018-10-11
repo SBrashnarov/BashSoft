@@ -1,17 +1,18 @@
 package IO.commands;
 
-import contracts.*;
+import annotations.Alias;
+import annotations.Inject;
+import contracts.Database;
 import exceptions.InvalidInputException;
 
-public class PrintFilteredStudentsCommand extends Command implements Executable {
+@Alias("filter")
+public class PrintFilteredStudentsCommand extends Command {
 
-    public PrintFilteredStudentsCommand(String input,
-                                        String[] data,
-                                        Database repository,
-                                        ContentComparer tester,
-                                        DirectoryManager ioManager,
-                                        AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+    @Inject
+    private Database repository;
+
+    public PrintFilteredStudentsCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -25,12 +26,12 @@ public class PrintFilteredStudentsCommand extends Command implements Executable 
         String filter = data[2].toLowerCase();
 
         if (data.length == 3) {
-            this.getRepository().filterAndTake(course, filter);
+            this.repository.filterAndTake(course, filter);
             return;
         }
 
         Integer numberOfStudents = Integer.parseInt(data[3]);
 
-        this.getRepository().filterAndTake(course, filter, numberOfStudents);
+        this.repository.filterAndTake(course, filter, numberOfStudents);
     }
 }

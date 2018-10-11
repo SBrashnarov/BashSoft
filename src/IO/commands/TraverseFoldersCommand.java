@@ -1,17 +1,19 @@
 package IO.commands;
 
-import contracts.*;
+import annotations.Alias;
+import annotations.Inject;
+import contracts.DirectoryManager;
 import exceptions.InvalidInputException;
 
-public class TraverseFoldersCommand extends Command implements Executable {
 
-    public TraverseFoldersCommand(String input,
-                                  String[] data,
-                                  Database repository,
-                                  ContentComparer tester,
-                                  DirectoryManager ioManager,
-                                  AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+@Alias("ls")
+public class TraverseFoldersCommand extends Command {
+
+    @Inject
+    private DirectoryManager ioManager;
+
+    public TraverseFoldersCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -22,12 +24,12 @@ public class TraverseFoldersCommand extends Command implements Executable {
         }
 
         if (data.length == 1) {
-            this.getIoManager().traverseDirectory(0);
+            this.ioManager.traverseDirectory(0);
         }
 
         if (data.length == 2) {
             int depth = Integer.parseInt(data[1]);
-            this.getIoManager().traverseDirectory(depth);
+            this.ioManager.traverseDirectory(depth);
         }
     }
 }

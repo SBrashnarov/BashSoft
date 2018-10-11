@@ -1,17 +1,19 @@
 package IO.commands;
 
-import contracts.*;
+import annotations.Alias;
+import annotations.Inject;
+import contracts.Database;
 import exceptions.InvalidInputException;
 
-public class ShowCourseCommand extends Command implements Executable {
 
-    public ShowCourseCommand(String input,
-                             String[] data,
-                             Database repository,
-                             ContentComparer tester,
-                             DirectoryManager ioManager,
-                             AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+@Alias("show")
+public class ShowCourseCommand extends Command {
+
+    @Inject
+    private Database repository;
+
+    public ShowCourseCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -23,13 +25,13 @@ public class ShowCourseCommand extends Command implements Executable {
 
         if (data.length == 2) {
             String courseName = data[1];
-            this.getRepository().getStudentsByCourse(courseName);
+            this.repository.getStudentsByCourse(courseName);
         }
 
         if (data.length == 3) {
             String courseName = data[1];
             String userName = data[2];
-            this.getRepository().getStudentMarkInCourse(courseName, userName);
+            this.repository.getStudentMarkInCourse(courseName, userName);
         }
     }
 }

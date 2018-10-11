@@ -1,17 +1,18 @@
 package IO.commands;
 
-import contracts.*;
+import annotations.Alias;
+import annotations.Inject;
+import contracts.AsynchDownloader;
 import exceptions.InvalidInputException;
 
+@Alias("download")
 public class DownloadFileCommand extends Command {
 
-    public DownloadFileCommand(String input,
-                               String[] data,
-                               Database repository,
-                               ContentComparer tester,
-                               DirectoryManager ioManager,
-                               AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+    @Inject
+    private AsynchDownloader downloadManager;
+
+    public DownloadFileCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -22,6 +23,6 @@ public class DownloadFileCommand extends Command {
         }
 
         String fileUrl = data[1];
-        this.getDownloadManager().download(fileUrl);
+        this.downloadManager.download(fileUrl);
     }
 }

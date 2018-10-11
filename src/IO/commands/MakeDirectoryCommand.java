@@ -1,17 +1,18 @@
 package IO.commands;
 
-import contracts.*;
+import annotations.Alias;
+import annotations.Inject;
+import contracts.DirectoryManager;
 import exceptions.InvalidInputException;
 
-public class MakeDirectoryCommand extends Command implements Executable {
+@Alias("mkdir")
+public class MakeDirectoryCommand extends Command {
 
-    public MakeDirectoryCommand(String input,
-                                String[] data,
-                                Database repository,
-                                ContentComparer tester,
-                                DirectoryManager ioManager,
-                                AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+    @Inject
+    private DirectoryManager ioManager;
+
+    public MakeDirectoryCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -22,6 +23,6 @@ public class MakeDirectoryCommand extends Command implements Executable {
         }
 
         String folderName = data[1];
-        this.getIoManager().createDirectoryInCurrentDirectory(folderName);
+        this.ioManager.createDirectoryInCurrentDirectory(folderName);
     }
 }

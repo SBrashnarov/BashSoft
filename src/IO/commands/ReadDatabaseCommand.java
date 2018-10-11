@@ -1,17 +1,19 @@
 package IO.commands;
 
-import contracts.*;
+import annotations.Alias;
+import annotations.Inject;
+import contracts.Database;
 import exceptions.InvalidInputException;
 
-public class ReadDatabaseCommand extends Command implements Executable {
 
-    public ReadDatabaseCommand(String input,
-                               String[] data,
-                               Database repository,
-                               ContentComparer tester,
-                               DirectoryManager ioManager,
-                               AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+@Alias("readdb")
+public class ReadDatabaseCommand extends Command {
+
+    @Inject
+    private Database repository;
+
+    public ReadDatabaseCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -22,6 +24,6 @@ public class ReadDatabaseCommand extends Command implements Executable {
         }
 
         String fileName = data[1];
-        this.getRepository().loadData(fileName);
+        this.repository.loadData(fileName);
     }
 }

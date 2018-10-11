@@ -1,17 +1,18 @@
 package IO.commands;
 
-import contracts.*;
+import annotations.Alias;
+import annotations.Inject;
+import contracts.ContentComparer;
 import exceptions.InvalidInputException;
 
+@Alias("cmp")
 public class CompareFilesCommand extends Command {
 
-    public CompareFilesCommand(String input,
-                               String[] data,
-                               Database repository,
-                               ContentComparer tester,
-                               DirectoryManager ioManager,
-                               AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+    @Inject
+    private ContentComparer tester;
+
+    public CompareFilesCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -23,7 +24,7 @@ public class CompareFilesCommand extends Command {
 
         String firstPath = data[1];
         String secondPath = data[2];
-        this.getTester().compareContent(firstPath, secondPath);
+        this.tester.compareContent(firstPath, secondPath);
     }
 }
 

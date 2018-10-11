@@ -1,18 +1,18 @@
 package IO.commands;
 
+import annotations.Alias;
+import annotations.Inject;
 import contracts.*;
 import exceptions.InvalidInputException;
 
+@Alias("cdabs")
 public class ChangeAbsolutePathCommand extends Command {
 
+    @Inject
+    private DirectoryManager ioManager;
 
-    public ChangeAbsolutePathCommand(String input,
-                                     String[] data,
-                                     Database repository,
-                                     ContentComparer tester,
-                                     DirectoryManager ioManager,
-                                     AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+    public ChangeAbsolutePathCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -23,6 +23,6 @@ public class ChangeAbsolutePathCommand extends Command {
         }
 
         String absolutePath = data[1];
-        this.getIoManager().changeCurrentDirAbsolutePath(absolutePath);
+        this.ioManager.changeCurrentDirAbsolutePath(absolutePath);
     }
 }

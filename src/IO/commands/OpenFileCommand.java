@@ -1,21 +1,17 @@
 package IO.commands;
 
 import StaticData.SessionData;
-import contracts.*;
+import annotations.Alias;
 import exceptions.InvalidInputException;
 
 import java.awt.*;
 import java.io.File;
 
-public class OpenFileCommand extends Command implements Executable {
+@Alias("open")
+public class OpenFileCommand extends Command {
 
-    public OpenFileCommand(String input,
-                           String[] data,
-                           Database repository,
-                           ContentComparer tester,
-                           DirectoryManager ioManager,
-                           AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+    public OpenFileCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -26,7 +22,7 @@ public class OpenFileCommand extends Command implements Executable {
         }
 
         String fileName = data[1];
-        String filePath = SessionData.currentPath + "\\" + fileName;
+        String filePath = SessionData.currentPath + File.separator + fileName;
         File file = new File(filePath);
         Desktop.getDesktop().open(file);
     }

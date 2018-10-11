@@ -1,21 +1,24 @@
 package IO.commands;
 
 import IO.OutputWriter;
-import contracts.*;
+import annotations.Alias;
+import annotations.Inject;
+import contracts.Course;
+import contracts.Database;
+import contracts.Student;
 import dataStructures.SimpleSortedList;
 import exceptions.InvalidInputException;
 
 import java.util.Comparator;
 
+@Alias("display")
 public class DisplayCommand extends Command {
 
-    public DisplayCommand(String input,
-                          String[] data,
-                          Database repository,
-                          ContentComparer tester,
-                          DirectoryManager ioManager,
-                          AsynchDownloader downloadManager) {
-        super(input, data, repository, tester, ioManager, downloadManager);
+    @Inject
+    private Database repository;
+
+    public DisplayCommand(String input, String[] data) {
+        super(input, data);
     }
 
     @Override
@@ -30,12 +33,12 @@ public class DisplayCommand extends Command {
         if (entityToDisplay.equals("students")) {
             Comparator<Student> studentComparator = this.createStudentComparator(sortType);
 
-            SimpleSortedList<Student> students = this.getRepository().getAllStudentsSorted(studentComparator);
+            SimpleSortedList<Student> students = this.repository.getAllStudentsSorted(studentComparator);
             OutputWriter.writeMessageOnNewLine(students.joinWith(System.lineSeparator()));
         } else if (entityToDisplay.equals("courses")) {
             Comparator<Course> courseComparator = this.createCourseComparator(sortType);
 
-            SimpleSortedList<Course> courses = this.getRepository().getAllCoursesSorted(courseComparator);
+            SimpleSortedList<Course> courses = this.repository.getAllCoursesSorted(courseComparator);
             OutputWriter.writeMessageOnNewLine(courses.joinWith(System.lineSeparator()));
         }
     }
